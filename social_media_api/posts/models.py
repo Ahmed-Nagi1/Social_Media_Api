@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
 
-
 class Posts(models.Model):
     author = models.ForeignKey(User, verbose_name=_("author"), on_delete=models.CASCADE)
     content = models.TextField(_("content"))

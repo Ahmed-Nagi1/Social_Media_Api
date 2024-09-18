@@ -1,4 +1,5 @@
 django
 djangorestframework
+django-rest-passwordreset
 psycopg2
 Pillow
