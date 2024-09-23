@@ -68,8 +68,7 @@ class FriendRequestViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=["post"], url_path="delete-request")
     def delete_request(self, request, *args, **kwargs):
-        # Attempt to find the sent friend request and delete it
-        # If the request does not exist, return an error message
+        # Delete sent request
 
         from_user = request.user
         user_delete = request.data.get("user_delete")
@@ -112,31 +111,29 @@ def approval_of_requests(requests):
     # This function handles the approval of received friend requests
     # It creates a friendship if the request is valid and not already approved
 
-    if requests.method == "POST":
-        serializer = ApprovalOfRequestsSerializers(data=requests.data)
-        if serializer.is_valid():
-            user_add = serializer.validated_data.get("add_userID")
-            user = requests.user
-            check_user = Friendship.objects.filter(
-                from_user=user_add, to_user=user
-            ).exists()
-            check_friend = MyFriends.objects.filter(me=user, myFriend=user_add).exists()
-            if check_user:
-                if check_friend:
-                    return Response(
-                        {"error": "is already friends"},
-                        status=status.HTTP_400_BAD_REQUEST,
-                    )
-                else:
-                    MyFriends.objects.create(me=user, myFriend=user_add)
+    serializer = ApprovalOfRequestsSerializers(data=requests.data)
+    if serializer.is_valid():
+        user_add = serializer.validated_data.get("add_userID")
+        user = requests.user
+        check_user = Friendship.objects.filter(
+            from_user=user_add, to_user=user
+        ).exists()
+        check_friend = MyFriends.objects.filter(me=user, myFriend=user_add).exists()
+        if check_user:
+            if check_friend:
+                return Response(
+                    {"error": "is already friends"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            else:
+                MyFriends.objects.create(me=user, myFriend=user_add)
 
-                    return Response({"success": "Friendship created successfully"})
+                return Response({"success": "Friendship created successfully"})
 
-            return Response(
-                {"error": "user not found!"}, status=status.HTTP_400_BAD_REQUEST
-            )
+        return Response(
+            {"error": "user not found!"}, status=status.HTTP_400_BAD_REQUEST
+        )
 
-        return Response({"error": "Not valid"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ListMyFriends(viewsets.ModelViewSet):

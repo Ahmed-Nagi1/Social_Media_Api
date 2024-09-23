@@ -16,7 +16,7 @@ urlpatterns = [
     path("", include(router.urls)),
     path(
         "delete-request/",
-        views.FriendRequestViewSet.as_view({"post": "delete-request"}),
+        views.FriendRequestViewSet.as_view({"post": "delete_request"}),
     ),
     path("approval-of-requests/", views.approval_of_requests),
 ]

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "social_media_api.users",
     "social_media_api.posts",
     "social_media_api.friendship",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -109,13 +110,21 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     "DEFAULT_PERMISSION_CLASSES": [
         # 'rest_framework.authentication.TokenAuthentication',
-    ]
+    ],
 }
-
+# DOCS
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Your Project API",
+    "DESCRIPTION": "Your project description",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    # OTHER SETTINGS
+}
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
