@@ -7,13 +7,13 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('posts', '0007_remove_posts_comments_count'),
+        ("posts", "0007_remove_posts_comments_count"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AlterUniqueTogether(
-            name='reaction',
-            unique_together={('post', 'author')},
+            name="reaction",
+            unique_together={("post", "author")},
         ),
     ]

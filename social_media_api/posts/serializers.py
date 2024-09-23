@@ -1,24 +1,19 @@
 from rest_framework import serializers
-from .models import (Posts,
-            Reaction,
-            Comment
-)
+from .models import Posts, Reaction, Comment
 
 
 class PostsAuthorSerializers(serializers.ModelSerializer):
     class Meta:
         model = Posts
-        fields = ['pk', 'content', 'image', 'created_at', 'updated_at']
-        read_only_fields = ['created_at', 'updated_at']
-        extra_kwargs = {
-            'image': {'required': False} 
-        }
+        fields = ["pk", "content", "image", "created_at", "updated_at"]
+        read_only_fields = ["created_at", "updated_at"]
+        extra_kwargs = {"image": {"required": False}}
 
 
 class PostsViewersSerializers(serializers.ModelSerializer):
     class Meta:
         model = Posts
-        exclude = ['id']
+        exclude = ["id"]
 
 
 class CommentSerializers(serializers.ModelSerializer):

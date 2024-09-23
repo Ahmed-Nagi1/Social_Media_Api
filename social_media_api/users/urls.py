@@ -4,11 +4,13 @@ from . import views
 
 
 router = DefaultRouter()
-router.register('sign_up', views.RegisterViewSet)
+router.register("sign_up", views.RegisterViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
-    path('change_assword/', views.change_password, name='change_password'),
-    path('password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
-    
+    path("", include(router.urls)),
+    path("change_password/", views.change_password, name="change_password"),
+    path(
+        "password_reset/",
+        include("django_rest_passwordreset.urls", namespace="password_reset"),
+    ),
 ]

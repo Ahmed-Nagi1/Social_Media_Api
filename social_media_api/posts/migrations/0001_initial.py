@@ -15,16 +15,51 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Posts',
+            name="Posts",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('content', models.TextField(verbose_name='content')),
-                ('reactions_count', models.IntegerField(default=0, verbose_name='reactions count')),
-                ('comments_count', models.IntegerField(default=0, verbose_name='comments count')),
-                ('image', models.ImageField(height_field=900, upload_to='posts/image/', verbose_name='image', width_field=900)),
-                ('updated_at', models.DateTimeField(auto_now_add=True, verbose_name='updated at')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='created at')),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='author')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("content", models.TextField(verbose_name="content")),
+                (
+                    "reactions_count",
+                    models.IntegerField(default=0, verbose_name="reactions count"),
+                ),
+                (
+                    "comments_count",
+                    models.IntegerField(default=0, verbose_name="comments count"),
+                ),
+                (
+                    "image",
+                    models.ImageField(
+                        height_field=900,
+                        upload_to="posts/image/",
+                        verbose_name="image",
+                        width_field=900,
+                    ),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="updated at"),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="created at"),
+                ),
+                (
+                    "author",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="author",
+                    ),
+                ),
             ],
         ),
     ]
