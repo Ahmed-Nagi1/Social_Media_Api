@@ -135,7 +135,6 @@ def approval_of_requests(requests):
         )
 
 
-
 class ListMyFriends(viewsets.ModelViewSet):
     # This viewset lists all friends of the currently logged-in user
 
