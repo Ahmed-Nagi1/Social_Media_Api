@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Group</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #chat {
+            width: 300px;
+            height: 400px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            overflow-y: scroll;
+            margin-bottom: 10px;
+        }
+        #messageInput {
+            width: 80%;
+        }
+        #sendBtn {
+            width: 18%;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="chat"></div>
+    <input type="text" id="messageInput" placeholder="Type a message...">
+    <button id="sendBtn">Send</button>
+    <h3>Messages</h3>
+    <ul>
+        {% for message in messages %}
+            <li><strong>{{ message.sender.username }}:</strong> {{ message.content }} ({{ message.created_at }})</li>
+        {% empty %}
+            <li>No messages in this room yet.</li>
+        {% endfor %}
+    </ul>
+    <!-- Pass room_name from Django view -->
+    <script>
+        const roomName = "{{ room_name }}";
+        document.write('<div id="room-name" style="display: none;">' + JSON.stringify(roomName) + '</div>');
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Retrieve the room name from the HTML element
+            const roomName = JSON.parse(document.getElementById('room-name').textContent);
+            
+            // Establish WebSocket connection using the room name
+            const chatSocket = new WebSocket(
+                "ws://" + window.location.host + "/ws/chat-group/" + roomName + "/"
+            );
+            const chat = document.getElementById("chat");
+            const messageInput = document.getElementById("messageInput");
+            const sendBtn = document.getElementById("sendBtn");
+        
+            // Display incoming messages
+            chatSocket.onmessage = function (e) {
+                const data = JSON.parse(e.data);
+                const message = data.message;
+                chat.innerHTML += "<p>" + message + "</p>";
+                chat.scrollTop = chat.scrollHeight; // Scroll to the bottom of the chat
+            };
+        
+            // Handle WebSocket connection close
+            chatSocket.onclose = function (e) {
+                console.error("Chat socket closed unexpectedly");
+            };
+        
+            // Send a message when the send button is clicked
+            sendBtn.onclick = function () {
+                const message = messageInput.value;
+                if (message.trim()) {
+                    chatSocket.send(JSON.stringify({ message: message }));
+                    messageInput.value = "";
+                }
+            };
+        
+            // Send a message when the "Enter" key is pressed
+            messageInput.addEventListener("keypress", function (e) {
+                if (e.key === "Enter") {
+                    sendBtn.click();
+                }
+            });
+        });
+        
+    </script>
+</body>
+</html>

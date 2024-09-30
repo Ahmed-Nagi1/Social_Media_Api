@@ -1,0 +1,51 @@
+[tool.ruff]
+target-version = "py312"
+# Exclude a variety of commonly ignored directories.
+extend-exclude = [
+    "*/migrations/*.py",
+    "staticfiles/*",
+]
+
+[tool.ruff.lint]
+select = [
+  "F", "E", "W", "C90", "I", "N", "UP", "YTT", 
+  # "ANN", # flake8-annotations: we should support this in the future but 100+ errors atm
+  "ASYNC", "S", "BLE", "FBT", "B", "A", "COM", "C4", "DTZ", "T10", 
+  "DJ", "EM", "EXE", "FA", "ISC", "ICN", "G", "INP", "PIE", "T20", 
+  "PYI", "PT", "Q", "RSE", "RET", "SLF", "SLOT", "SIM", "TID", "TCH", 
+  "INT", 
+  # "ARG", # Unused function argument
+  "PTH", "ERA", "PD", "PGH", "PL", "TRY", "FLY", 
+  # "NPY", 
+  # "AIR",
+  "PERF", 
+  # "FURB", 
+  # "LOG",
+  "RUF"
+]
+
+ignore = [
+  "E501",       # Ignore line length errors
+  "PLR2004", 
+  "A004",       # Ignore the import organization rule from isort
+  "S101",       # Use of assert detected https://docs.astral.sh/ruff/rules/assert/
+  "RUF012",     # Mutable class attributes should be annotated with `typing.ClassVar`
+  "SIM102",     # Sometimes nesting is better
+  "UP038",      # Checks for uses of isinstance/issubclass that take a tuple
+                # of types for comparison. Disabled because it can slow down code.
+]
+
+# The fixes in extend-unsafe-fixes will require
+# providing the `--unsafe-fixes` flag when fixing.
+extend-unsafe-fixes = [
+    "UP038",
+]
+
+[tool.ruff.lint.isort]
+force-single-line = false  # Do not split imports into multiple lines, compatible with isort settings
+
+[tool.isort]
+combine_as_imports = true    # Combine imports into a single line if they are from the same source
+force_single_line = false    # Do not force imports to be on separate lines
+line_length = 88             # Line length
+include_trailing_comma = true  # Add a comma after the last item in imports

@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 from django.utils.translation import gettext as _
 
 
@@ -8,7 +8,10 @@ class Posts(models.Model):
     content = models.TextField(_("content"))
     reactions_count = models.IntegerField(_("reactions count"), default=0)
     image = models.ImageField(
-        _("image"), upload_to="posts/image/", blank=True, null=True
+        _("image"),
+        upload_to="posts/image/",
+        blank=True,
+        null=True,
     )
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
     updated_at = models.DateTimeField(_("updated at"), auto_now=True)
@@ -16,7 +19,10 @@ class Posts(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey(
-        Posts, related_name="comments", verbose_name=_("post"), on_delete=models.CASCADE
+        Posts,
+        related_name="comments",
+        verbose_name=_("post"),
+        on_delete=models.CASCADE,
     )
     author = models.ForeignKey(User, verbose_name=_("author"), on_delete=models.CASCADE)
     content = models.TextField(_("content"))
@@ -41,7 +47,9 @@ class Reaction(models.Model):
     )
     author = models.ForeignKey(User, verbose_name=_("author"), on_delete=models.CASCADE)
     reaction_type = models.CharField(
-        _("reaction type"), max_length=10, choices=REACTION_CHOICES
+        _("reaction type"),
+        max_length=10,
+        choices=REACTION_CHOICES,
     )
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
 

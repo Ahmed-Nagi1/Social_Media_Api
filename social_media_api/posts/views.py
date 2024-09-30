@@ -1,14 +1,12 @@
-from django.shortcuts import render
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import IsAuthenticated
 
-from .models import Posts, Reaction, Comment
-
+from .models import Comment, Posts, Reaction
 from .serializers import (
+    CommentSerializers,
     PostsAuthorSerializers,
     PostsViewersSerializers,
-    CommentSerializers,
     ReactionSerializers,
 )
 
@@ -54,7 +52,8 @@ class ReactionViewSet(viewsets.ModelViewSet):
         post_id = self.request.data.get("post")
         post = Posts.objects.get(id=post_id)
         existing_reaction = Reaction.objects.filter(
-            post=post, author=self.request.user
+            post=post,
+            author=self.request.user,
         ).first()
 
         reaction_type = self.request.data.get("reaction_type")
@@ -68,8 +67,7 @@ class ReactionViewSet(viewsets.ModelViewSet):
             else:
                 existing_reaction.reaction_type = reaction_type
                 existing_reaction.save()
-        else:
-            if reaction_type != "unlike":
-                post.reactions_count += 1
-                serializer.save(author=self.request.user, post=post)
+        elif reaction_type != "unlike":
+            post.reactions_count += 1
+            serializer.save(author=self.request.user, post=post)
         post.save()
