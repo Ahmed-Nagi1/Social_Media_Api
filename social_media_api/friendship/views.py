@@ -1,17 +1,16 @@
-from rest_framework import viewsets
+from rest_framework import status, viewsets
+from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.decorators import action, api_view, permission_classes
 
 from .models import Friendship, MyFriends
 from .serializers import (
-    SendFriendRequestSerializers,
+    ApprovalOfRequestsSerializers,
+    DeleteMyFriendSerializers,
     ListFriendRequestSerializers,
     ListFriendsSerializers,
-    ApprovalOfRequestsSerializers,
     ListMyFriendsSerializers,
-    DeleteMyFriendSerializers,
+    SendFriendRequestSerializers,
 )
 
 
@@ -58,7 +57,9 @@ class FriendRequestViewSet(viewsets.ModelViewSet):
             )
 
         Friendship.objects.create(
-            from_user=from_user, to_user=to_user, status=Friendship.REQUESTED
+            from_user=from_user,
+            to_user=to_user,
+            status=Friendship.REQUESTED,
         )
 
         return Response(
@@ -86,7 +87,8 @@ class FriendRequestViewSet(viewsets.ModelViewSet):
             return Response({"status": "OK"}, status=status.HTTP_204_NO_CONTENT)
 
         return Response(
-            {"error": "Friend request not found."}, status=status.HTTP_404_NOT_FOUND
+            {"error": "Friend request not found."},
+            status=status.HTTP_404_NOT_FOUND,
         )
 
 
@@ -116,7 +118,8 @@ def approval_of_requests(requests):
         user_add = serializer.validated_data.get("add_userID")
         user = requests.user
         check_user = Friendship.objects.filter(
-            from_user=user_add, to_user=user
+            from_user=user_add,
+            to_user=user,
         ).exists()
         check_friend = MyFriends.objects.filter(me=user, myFriend=user_add).exists()
         if check_user:
@@ -125,15 +128,14 @@ def approval_of_requests(requests):
                     {"error": "is already friends"},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-            else:
-                MyFriends.objects.create(me=user, myFriend=user_add)
+            MyFriends.objects.create(me=user, myFriend=user_add)
 
-                return Response({"success": "Friendship created successfully"})
+            return Response({"success": "Friendship created successfully"})
 
         return Response(
-            {"error": "user not found!"}, status=status.HTTP_400_BAD_REQUEST
+            {"error": "user not found!"},
+            status=status.HTTP_400_BAD_REQUEST,
         )
-
 
 
 class ListMyFriends(viewsets.ModelViewSet):

@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
 
 class Friendship(models.Model):
@@ -12,10 +12,14 @@ class Friendship(models.Model):
     ]
 
     from_user = models.ForeignKey(
-        User, related_name="sent_requests", on_delete=models.CASCADE
+        User,
+        related_name="sent_requests",
+        on_delete=models.CASCADE,
     )
     to_user = models.ForeignKey(
-        User, related_name="received_requests", on_delete=models.CASCADE
+        User,
+        related_name="received_requests",
+        on_delete=models.CASCADE,
     )
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=REQUESTED)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -31,7 +35,9 @@ class Friendship(models.Model):
 class MyFriends(models.Model):
     me = models.ForeignKey(User, on_delete=models.CASCADE)
     myFriend = models.ForeignKey(
-        User, related_name="my_friends", on_delete=models.CASCADE
+        User,
+        related_name="my_friends",
+        on_delete=models.CASCADE,
     )
     created_at = models.DateTimeField(auto_now_add=True)
 

@@ -1,13 +1,18 @@
-from django.urls import path, include
+from django.urls import include, path
 from rest_framework.routers import DefaultRouter
+
 from . import views
 
 router = DefaultRouter()
 router.register(
-    "send-request-friend", views.FriendRequestViewSet, basename="send_friend_request"
+    "send-request-friend",
+    views.FriendRequestViewSet,
+    basename="send_friend_request",
 )
 router.register(
-    "list-request-friend", views.ListRequestFriends, basename="list_request_friends"
+    "list-request-friend",
+    views.ListRequestFriends,
+    basename="list_request_friends",
 )
 router.register("list-my-friends", views.ListMyFriends, basename="list_my_friends")
 router.register("delete-my-friends", views.DeleteMyFriend, basename="delete_my_friends")
