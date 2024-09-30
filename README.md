@@ -66,7 +66,7 @@ Before starting the project, ensure that you have the following environment file
    cd Social_Media_Api
    ```
 2. **Set Up Environment Variables**:
-   Make sure to copy the `.env.local` or `.env.production` files into the `.envs` directory and update them with your configurations.
+   Make sure to copy the `.env/.local` or `.env/.production` files into the `.envs` directory and update them with your configurations.
 Here's an updated version of the **3. Build and Run Docker Containers** section in English with the differentiation between development and production environments:
 
 ---
@@ -91,9 +91,6 @@ Here's an updated version of the **3. Build and Run Docker Containers** section 
    ```
 
 --- 
-
-
----
 
 ### Additional Notes
 
