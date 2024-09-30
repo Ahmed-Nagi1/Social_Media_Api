@@ -3,8 +3,10 @@ import uuid
 from django.contrib.auth.models import User
 from django.db import models
 
+
 def generate_uuid():
     return str(uuid.uuid4())[:13]
+
 
 class GroupsManage(models.Model):
 
@@ -33,8 +35,6 @@ class GroupMembership(models.Model):
 
     class Meta:
         unique_together = ("user", "group")
-    
-
 
 
 class MessageGroup(models.Model):
@@ -45,7 +45,9 @@ class MessageGroup(models.Model):
         editable=False,
         unique=True,
     )
-    group = models.ForeignKey(GroupMembership, related_name="messages", on_delete=models.CASCADE)
+    group = models.ForeignKey(
+        GroupMembership, related_name="messages", on_delete=models.CASCADE
+    )
     sender = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)

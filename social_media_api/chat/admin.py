@@ -8,6 +8,7 @@ class GroupsManageAdmin(admin.ModelAdmin):
     search_fields = ("name", "owner__username")
     list_filter = ("owner",)
 
+
 admin.site.register(GroupsManage, GroupsManageAdmin)
 
 

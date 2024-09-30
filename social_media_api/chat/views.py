@@ -33,7 +33,7 @@ class ManageGroup(viewsets.ModelViewSet):
 
             # Create the group
             group = GroupsManage.objects.create(owner=request.user, name=name)
-            
+
             # Automatically add the owner as a member to the group
             GroupMembership.objects.create(user=request.user, group=group)
 
@@ -75,11 +75,9 @@ class ManageGroup(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        print(colored(pk, 'red'))
+        print(colored(pk, "red"))
         GroupMembership.objects.create(user=user, groupID=pk)
         return Response(
             {"status": "You have successfully joined the group"},
             status=status.HTTP_200_OK,
         )
-
-

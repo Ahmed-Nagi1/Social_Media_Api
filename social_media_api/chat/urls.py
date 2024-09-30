@@ -9,5 +9,5 @@ router.register("manage-group", views.ManageGroup, basename="create-group")
 urlpatterns = [
     path("", include(router.urls)),
     path("groups/<pk>/join/", views.ManageGroup.as_view({"post": "join_group"})),
-    path('chat-group/<str:room_name>/', views.chat_room, name='chat_room'),
+    path("chat-group/<str:room_name>/", views.chat_room, name="chat_room"),
 ]

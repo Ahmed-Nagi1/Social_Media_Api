@@ -5,22 +5,25 @@ from channels.db import database_sync_to_async
 from .models import MessageGroup, GroupsManage, GroupMembership
 
 
-
 class ChatGroupConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chat_{self.room_name}"
         user = self.scope["user"]
         if user.is_authenticated:
-            
+
             try:
                 # Check if the group exists
-                self.group = await database_sync_to_async(GroupMembership.objects.get)(groupID=self.room_name)
-                
+                self.group = await database_sync_to_async(GroupMembership.objects.get)(
+                    groupID=self.room_name
+                )
+
                 # Check if the user is a member of the group
                 # membership = await database_sync_to_async(GroupMembership.objects.get)(user=user, group=self.group)
 
-                await self.channel_layer.group_add(self.room_group_name, self.channel_name)
+                await self.channel_layer.group_add(
+                    self.room_group_name, self.channel_name
+                )
                 await self.accept()
 
             except GroupsManage.DoesNotExist:
@@ -56,7 +59,5 @@ class ChatGroupConsumer(AsyncWebsocketConsumer):
     def save_message(self, sender, message):
         # Save the message in the MessageGroup model
         return MessageGroup.objects.create(
-            group=self.group,
-            sender=sender,
-            content=message
+            group=self.group, sender=sender, content=message
         )
