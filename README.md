@@ -36,7 +36,6 @@ This feature allows users to engage in real-time group chats using WebSockets. K
 
 ### Authentication and User Management
 
-- **JWT Authentication**: Secure the API using JSON Web Tokens (JWT).
 - **User Registration**: Allow new users to sign up.
 - **User Login**: Enable existing users to log in and get authenticated.
 - **User Profile**: View and edit user profile information.
