@@ -7,7 +7,6 @@ from rest_framework.response import Response
 from .models import GroupMembership, GroupsManage, MessageGroup
 from .serializers import ManageGroupListSerializer, ManageGroupSerializer
 
-from termcolor import colored
 
 
 class ManageGroup(viewsets.ModelViewSet):
@@ -75,7 +74,6 @@ class ManageGroup(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        print(colored(pk, "red"))
         GroupMembership.objects.create(user=user, groupID=pk)
         return Response(
             {"status": "You have successfully joined the group"},

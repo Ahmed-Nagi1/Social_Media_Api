@@ -1,0 +1,90 @@
+--- 
+export interface Props {
+  id: string; // Form ID
+  linkTo: string;
+  fields: Array<{ 
+    id: string; 
+    label: string; 
+    type: string; 
+    placeholder?: string; 
+    options?: Array<{ label: string; value: string }>; // For dropdown/select fields
+  }>; 
+  submitLabel: string; // Text for submit button
+  extraActions?: Array<{ label: string; link: string; classes?: string }>; // Optional extra links or actions
+}
+const { id, linkTo, fields, submitLabel, extraActions } = Astro.props;
+---
+
+<form id={id} class="space-y-4" hx-post={linkTo} hx-target="#responseData">
+    {fields.map((field) => (
+        <div>
+            <label for={field.id} class="block text-sm font-medium text-gray-700">{field.label}</label>
+            {field.type === "select" ? (
+                <select id={field.id} name={field.id} 
+                    class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    {field.options?.map(option => (
+                        <option value={option.value}>{option.label}</option>
+                    ))}
+                </select>
+            ) : (
+                <input 
+                    type={field.type} 
+                    id={field.id} 
+                    name={field.id} 
+                    placeholder={field.placeholder || ''} 
+                    class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </input>
+            )}
+        </div>
+    ))}
+    <button type="submit"
+        class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+        {submitLabel}
+    </button>
+    {extraActions && (
+        <div class="flex justify-between mt-4">
+            {extraActions.map(action => (
+                <a href={action.link} class={action.classes || "text-sm text-blue-600 hover:underline"}>
+                    {action.label}
+                </a>
+            ))}
+        </div>
+    )}
+    <div id="responseData"></div>
+    <div id="errorMessage"></div>
+
+    <script>
+        // Handle response from server
+        document.addEventListener("htmx:afterRequest", function (event) {
+            if (event.detail.target.id === "responseData") {
+                const response = event.detail.xhr.response; 
+                console.log(response);
+                const responseData = JSON.parse(response);
+                let responseDev = document.getElementById('responseData');
+                responseDev.classList.add('bg-green-100', 'text-green-800', 'p-4', 'rounded');
+                responseDev.style.display = "block";
+                responseDev.textContent = responseData.detail;
+            }
+        });
+
+        // Handle error from server
+        document.addEventListener("htmx:responseError", function (event) {
+            try {
+                let responseJson = JSON.parse(event.detail.xhr.responseText);
+                
+                let errorKey = Object.keys(responseJson)
+                let errorMessage = responseJson[errorKey]
+                
+                let errorDiv = document.getElementById("errorMessage");
+                errorDiv.classList.add('bg-red-100', 'text-red-800', 'p-4', 'rounded');
+                
+                let myElement = document.getElementById('responseData').classList.add('hidden');
+                errorDiv.style.display = "block";
+                errorDiv.textContent = errorMessage;
+            } catch (e) {
+                console.error("error", e);
+            }
+        });
+        
+    </script>
+</form>

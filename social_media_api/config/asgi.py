@@ -4,11 +4,11 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "social_media_api.config.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
 django.setup()
 
-from social_media_api.chat.routing import websocket_urlpatterns
+from chat.routing import websocket_urlpatterns
 
 application = ProtocolTypeRouter(
     {

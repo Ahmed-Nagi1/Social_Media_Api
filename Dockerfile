@@ -1,20 +1,30 @@
-# Use Python image as the base image
-FROM python:3.9-slim
+# Base image for the combined environment
+FROM python:3.10-slim AS base
 
-# Set the working directory inside the container
-WORKDIR /app
+# Install Node.js for Astro
+RUN apt-get update && apt-get install -y curl && \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g pnpm && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Copy the requirements file to the container
-COPY requirements.txt /app/
-
-# Install the dependencies (required libraries)
+# Django setup
+WORKDIR /app/django
+COPY social_media_api/ /app/django/
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the entire project to the container
-COPY . /app/
+# Astro setup
+WORKDIR /app/astro
+COPY social_media_ui/ /app/astro/
+RUN pnpm install
 
-# Expose port 8000 to be used by Django
-EXPOSE 8000
+# Entrypoint script
+WORKDIR /app
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
-# Set the default command to run Django's development server
-ENTRYPOINT ["entrypoint.sh"]
+# Expose ports for both services
+EXPOSE 8000 4321
+
+# Default command
+CMD ["/app/entrypoint.sh"]

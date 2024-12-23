@@ -1,0 +1,33 @@
+---
+import FormComponent from '../../components/Form.astro';
+
+const userFields = [
+  { id: 'username', label: 'Username', type: 'text', placeholder: 'Enter your username' },
+  { id: 'first_name', label: 'First name', type: 'text', placeholder: 'Enter your first name' },
+  { id: 'last_name', label: 'Last name', type: 'text', placeholder: 'Enter your last name' },
+];
+
+const userProps = {
+  id: 'user-form',
+  linkTo: "http://127.0.0.1:8000/auth/user/",
+  fields: userFields,
+  submitLabel: 'Save',
+  extraActions: [
+    { label: 'Forgot password?', link: '/account/reset-password' },
+  ],
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white shadow-lg rounded-lg p-8 max-w-sm w-full">
+        <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">User Profile</h2>
+        <FormComponent {...userProps} />
+    </div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+---
+import FormComponent from '../../components/Form.astro';
+
+const signUpFields = [
+  { id: 'email', label: 'Email Address', type: 'email', placeholder: 'Enter your email' },
+  { id: 'password1', label: 'Password', type: 'password', placeholder: 'Create a password' },
+  { id: 'password2', label: 'Password', type: 'password', placeholder: 'Confirm your password' },
+];
+
+const signUpProps = {
+  id: 'sign-up-form',
+  linkTo: "http://127.0.0.1:8000/auth/registration/",
+  fields: signUpFields,
+  submitLabel: 'Sign Up',
+};
+---
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign-Up Page</title>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white shadow-lg rounded-lg p-8 max-w-sm w-full">
+        <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Create Your Account</h2>
+        <FormComponent {...signUpProps} />
+        <p class="text-sm text-center text-gray-600 mt-4">Already have an account? <a href="/account/login" class="text-blue-600 hover:underline">Login</a></p>
+    </div>
+</body>
+</html>
