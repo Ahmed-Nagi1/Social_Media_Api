@@ -9,4 +9,4 @@ router.register("viewers", views.PostViewersView, basename="viewers_post")
 router.register("comment", views.CommentViewSet, basename="comment_post")
 router.register("react", views.ReactionViewSet, basename="react_post")
 
-urlpatterns = [path("", include(router.urls))]
+urlpatterns = router.urls

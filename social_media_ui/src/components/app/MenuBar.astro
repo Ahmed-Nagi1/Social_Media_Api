@@ -1,0 +1,75 @@
+<header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto flex justify-between items-center p-4">
+        <div class="flex items-center space-x-4">
+            <h1 class="text-2xl font-bold">My Social Page</h1>
+        </div>
+
+        <nav id="navLinks" class="hidden md:flex space-x-6">
+            <a href="#" class="text-white hover:text-blue-300 hover:underline transition duration-300">Home</a>
+            <a href="#" class="text-white hover:text-blue-300 hover:underline transition duration-300">About</a>
+            <a href="#" class="text-white hover:text-blue-300 hover:underline transition duration-300">Contact</a>
+            <a href="#" class="text-white hover:text-blue-300 hover:underline transition duration-300">Blog</a>
+        </nav>
+
+        <div class="flex items-center space-x-4">
+            <button id="menuBtn" class="md:hidden text-white hover:text-blue-300 transition duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <div id="mobileMenu" class="fixed top-0 right-0 h-full w-2/3 bg-blue-700 text-white shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out">
+        <button id="closeMenu" class="absolute top-4 right-4 text-white hover:text-blue-300 transition duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        <nav class="flex flex-col p-6 space-y-4">
+            <a href="#" class="text-lg hover:text-blue-300 hover:underline transition duration-300">Home</a>
+            <a href="#" class="text-lg hover:text-blue-300 hover:underline transition duration-300">About</a>
+            <a href="#" class="text-lg hover:text-blue-300 hover:underline transition duration-300">Contact</a>
+            <a href="#" class="text-lg hover:text-blue-300 hover:underline transition duration-300">Blog</a>
+        </nav>
+    </div>
+</header>
+
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const closeMenu = document.getElementById('closeMenu');
+
+    menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.remove('translate-x-full'); // Show menu
+        mobileMenu.classList.add('translate-x-0');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    });
+
+    closeMenu.addEventListener('click', () => {
+        mobileMenu.classList.remove('translate-x-0'); // Hide menu
+        mobileMenu.classList.add('translate-x-full');
+        document.body.style.overflow = ''; // Re-enable background scrolling
+    });
+
+    // Hide menu when clicking outside of it
+    window.addEventListener('click', (event) => {
+        if (!menuBtn.contains(event.target) && !mobileMenu.contains(event.target) && !mobileMenu.classList.contains('translate-x-full')) {
+            mobileMenu.classList.remove('translate-x-0');
+            mobileMenu.classList.add('translate-x-full');
+            document.body.style.overflow = ''; // Re-enable background scrolling
+        }
+    });
+</script>
+
+<style>
+    @media (max-width: 768px) {
+        #navLinks {
+            display: none; /* Hide navigation links on small screens */
+        }
+    }
+
+    a {
+        transition: color 0.3s ease-in-out;
+    }
+</style>

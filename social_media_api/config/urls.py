@@ -22,12 +22,10 @@ from django.urls import include, path, re_path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.authtoken import views
 from dj_rest_auth.registration.views import VerifyEmailView
-from .custom_account import CustomConfirmEmailView, CustomLoginView
 
 
 urlpatterns = [
-    re_path(r"^auth/registration/account-confirm-email/(?P<key>[-:\w]+)/$", CustomConfirmEmailView.as_view(),name="account_confirm_email",),
-    path('auth/login/', CustomLoginView.as_view(), name='rest_login'),
+    path("auth/", include("accounts.urls")),
     path('auth/', include('dj_rest_auth.urls')),
     path('auth/registration/', include('dj_rest_auth.registration.urls')),
 
@@ -42,6 +40,7 @@ urlpatterns = [
         SpectacularSwaggerView.as_view(url_name="schema"),
         name="swagger-ui",
     ),
+
     path("app/posts/", include("posts.urls")),
     path("app/friendship/", include("friendship.urls")),
     path("app/chat/", include("chat.urls")),

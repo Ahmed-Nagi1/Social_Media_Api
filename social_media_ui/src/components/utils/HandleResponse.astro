@@ -1,0 +1,43 @@
+<div id="responseData"></div>
+
+<script>
+    document.addEventListener("formSuccess", function (event) {
+        const { responseData, statusCode } = event.detail; // Destructure responseData and statusCode
+        let responseBox = document.getElementById("responseData");
+        console.log(statusCode);
+        // Convert the object values to a string
+        let responseValues = "";
+        if (responseData && typeof responseData === "object") {
+            Object.values(responseData).forEach((value) => {
+                responseValues += `${value}\n`; // Add a new line after each value
+            });
+        }
+        
+        // Customize the appearance and content based on the status code
+        if (statusCode === 200) {
+            if (responseData.access) {
+                localStorage.setItem("accessToken", responseData.access);
+                window.location.href = "/account/user";
+                responseBox.className =
+                    "bg-green-100 text-green-800 p-4 rounded";
+                responseBox.textContent = `(${statusCode}):\n${responseValues}`;
+            }else{
+                responseBox.className =
+                    "bg-green-100 text-green-800 p-4 rounded";
+                responseBox.textContent = `(${statusCode}):\n${responseValues}`;
+            }
+        } else if (statusCode >= 400 && statusCode < 500) {
+            responseBox.className = "bg-red-100 text-red-800 p-4 rounded";
+            responseBox.textContent = `(${statusCode}):\n${responseValues}`;
+        } else if (statusCode >= 500) {
+            responseBox.className = "bg-red-100 text-red-800 p-4 rounded";
+            responseBox.textContent = `(${statusCode}):\n${responseValues}`;
+        } else {
+            responseBox.className = "bg-gray-100 text-gray-800 p-4 rounded";
+            responseBox.textContent = `(${statusCode}):\n${responseValues}`;
+        }
+
+        responseBox.setAttribute("role", "alert");
+        responseBox.classList.remove("hidden");
+    });
+</script>

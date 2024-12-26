@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
 
 
+    'accounts',
     "posts",
     "friendship",
     "chat",
@@ -145,22 +146,57 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+
     "DEFAULT_PERMISSION_CLASSES": [
         # 'rest_framework.authentication.TokenAuthentication',
     ],
 }
 
+REST_AUTH = {
+    "OLD_PASSWORD_FIELD_ENABLED": True,
+    'USE_JWT': True,
+    'JWT_AUTH_REFRESH_COOKIE_PATH': '/',
+    'JWT_AUTH_SECURE': False,
+    'JWT_AUTH_HTTPONLY': False,
+    'JWT_AUTH_SAMESITE': 'Lax',
+    'JWT_AUTH_SAMESITE': 'Lax',
+    'JWT_AUTH_RETURN_EXPIRATION': False,
+    'JWT_AUTH_COOKIE_USE_CSRF': False,
+    'JWT_AUTH_COOKIE_ENFORCE_CSRF_ON_UNAUTHENTICATED': False,
+}
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=5), 
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),   
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': False,
+}
+
 # Account =========================
 ACCOUNT_LOGOUT_ON_GET = True
 LOGOUT_ON_PASSWORD_CHANGE = False
-
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_CHANGE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_RATE_LIMITS = {
+    "confirm_email": "1/4m", # 1 confirmation email every 4 minutes
+}
+
+
+
+
 AUTHENTICATION_BACKENDS = (
  # Needed to login by username in Django admin, regardless of `allauth`
  "django.contrib.auth.backends.ModelBackend",
@@ -169,23 +205,26 @@ AUTHENTICATION_BACKENDS = (
  "allauth.account.auth_backends.AuthenticationBackend",
 )
 
+CORS_ALLOWED_ORIGINS = ['http://127.0.0.1:4321/']
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:4321/']
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:4321",  # Frontend URL
+    'http://127.0.0.1:4321',
 ]
-CSRF_TRUSTED_ORIGINS = [
-          "http://localhost:4321/"
-]
-CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOW_METHODS = ['*']
-CORS_ALLOW_HEADERS = ['*']
+CORS_ALLOW_METHODS = [ '*']
+CORS_ALLOW_HEADERS = ["Authorization",'*']
 
-CSRF_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SAMESITE = 'Strict'
 CSRF_COOKIE_SECURE = False
-
-SESSION_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SECURE = False
+CORS_ORIGIN_WHITELIST = [
+    'http://127.0.0.1:4321', 
+]
+SESSION_COOKIE_SECURE = False
+
+SESSION_COOKIE_SAMESITE = 'Strict'
+# SESSION_COOKIE_SAMESITE = 'None'
 
 
 # DOCS =========================
@@ -230,30 +269,3 @@ EMAIL_PORT = env("EMAIL_PORT")
 EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS")
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
-
-
-import os
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {message}',
-            'style': '{',
-        },
-    },
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
-        },
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-    },
-}

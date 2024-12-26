@@ -1,6 +1,6 @@
 ---
 import FormComponent from '../../components/Form.astro';
-import Cookies from 'js-cookie'
+import HandleResponse from '../../components/utils/HandleResponse.astro';
 
 const loginFields = [
   { id: 'email', label: 'Email Address', type: 'email', placeholder: 'Enter your email' },
@@ -30,6 +30,9 @@ const loginProps = {
         <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Welcome Back!</h2>
         <FormComponent {...loginProps} />
         <p class="text-sm text-center text-gray-600 mt-4">Don't have an account? <a href="/account/sign-up" class="text-blue-600 hover:underline">Sign up</a></p>
+        
+        
     </div>
+
 </body>
 </html>

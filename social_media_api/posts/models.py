@@ -1,12 +1,12 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import gettext as _
-
+import uuid
 
 class Posts(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     author = models.ForeignKey(User, verbose_name=_("author"), on_delete=models.CASCADE)
     content = models.TextField(_("content"))
-    reactions_count = models.IntegerField(_("reactions count"), default=0)
     image = models.ImageField(
         _("image"),
         upload_to="posts/image/",
