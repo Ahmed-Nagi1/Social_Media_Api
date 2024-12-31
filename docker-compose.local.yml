@@ -7,10 +7,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000" # Django
-      - "4321:4321" # Astro
     volumes:
       - ./social_media_api:/app/django
-      - ./social_media_ui:/app/astro
     # environment:
     #   - DJANGO_SETTINGS_MODULE=social_media_api.settings
     command: ["/app/entrypoint.sh"]
