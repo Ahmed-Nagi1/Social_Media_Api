@@ -229,12 +229,13 @@ SESSION_COOKIE_SAMESITE = 'Strict'
 
 # DOCS =========================
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Your Project API",
+    "TITLE": "Social Media API",
     "DESCRIPTION": "Your project description",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
     # OTHER SETTINGS
 }
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
